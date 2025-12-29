@@ -1,4 +1,20 @@
 proxmox_vms = {
+  minecraft = {
+    description = "Minecraft"
+    template    = "debian13-cloudinit"
+    tags        = "debian"
+    config = {
+      cpu    = 4
+      memory = 16384
+      disks = {
+        scsi1 = { size = "64G" } # data
+      }
+      cloudinit = {
+        ip4_address = "192.168.2.220/24"
+      }
+    }
+  }
+
   labxadm1 = { # 📍
     description = "Administrator 1"
     template    = "debian13-cloudinit"
