@@ -14,10 +14,10 @@ variable memory {
 }
 
 # network
-variable network_ipv4 { type = string }
+variable network_ipv4    { type = string }
 variable network_gateway { type = string }
-variable dns_primary { type = string }
-variable dns_secondary { type = string }
+variable dns_primary     { type = string }
+variable dns_secondary   { type = string }
 
 variable root_storage {
   type    = string
