@@ -6,6 +6,13 @@ proxmox_lvm = {
     config = {
       cpu    = 4
       memory = 32768
+      disks = { # world data
+        scsi1 = {
+          size    = "64G"
+          storage = "appdata"
+          format  = "qcow2"
+        } 
+      }
       cloudinit = {
         ip4_address = "192.168.2.220/24"
       }
