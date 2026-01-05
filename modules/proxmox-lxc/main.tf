@@ -10,7 +10,7 @@ terraform {
 resource "proxmox_lxc" "lxc" {
   # proxmox config
   hostname    = var.name
-  description = var.description
+  description = "${var.description}\n"
   tags        = join(",", var.tags)
   
   ostemplate   = var.template 
