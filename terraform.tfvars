@@ -51,34 +51,10 @@ proxmox_lvm = {
       }
     }
   }
-  stoxnas = { # todo: delme
-    description = "NAS"
-    template    = "debian13-cloudinit"
-    tags        = "debian"
-    config = {
-      cpu    = 4
-      memory = 8096
-      cloudinit = {
-        ip4_address = "192.168.2.60/24"
-      }
-    }
-  }
-  netxdns = { # todo: delme
-    description = "DNS Server"
-    template    = "debian13-cloudinit"
-    tags        = "debian"
-    config = {
-      cpu    = 1
-      memory = 512
-      cloudinit = {
-        ip4_address = "192.168.2.110/24"
-      }
-    }
-  }
 }
 
 proxmox_lxc = {
-  stoxnas = { # todo: createme
+  stoxnas = {
     description  = "NAS"
     template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
     tags         = ["debian", "lxc"]
