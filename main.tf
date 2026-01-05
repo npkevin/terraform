@@ -15,8 +15,8 @@ provider "proxmox" {
 }
 
 module "vm" {
-  source    = "./modules/proxmox"
-  for_each  = var.proxmox_vms
+  source    = "./modules/proxmox-vm"
+  for_each  = var.proxmox_lvm
 
   name        = each.key
   description = each.value.description
@@ -28,4 +28,23 @@ module "vm" {
   disks       = each.value.config.disks
 
   cloudinit   = each.value.config.cloudinit
+}
+
+module "lxc" {
+  source    = "./modules/proxmox-lxc"
+  for_each  = var.proxmox_lxc
+
+  name            = each.key
+  description     = each.value.description
+  template        = each.value.template
+  tags            = each.value.tags
+
+  cpu             = each.value.cpu
+  memory          = each.value.memory
+  mountpoints     = each.value.mountpoints
+
+  network_ipv4     = each.value.network_ipv4
+  network_gateway = each.value.network_gateway
+  dns_primary     = each.value.dns_primary
+  dns_secondary   = each.value.dns_secondary
 }

@@ -1,14 +1,11 @@
-proxmox_vms = {
+proxmox_lvm = {
   minecraft = {
     description = "Minecraft"
     template    = "debian13-cloudinit"
     tags        = "debian"
     config = {
       cpu    = 4
-      memory = 16384
-      disks = {
-        scsi1 = { size = "64G" } # data
-      }
+      memory = 32768
       cloudinit = {
         ip4_address = "192.168.2.220/24"
       }
@@ -54,22 +51,7 @@ proxmox_vms = {
       }
     }
   }
-  medxxrr = {
-    description = "Media Management Server for *arr environment"
-    template    = "debian13-cloudinit"
-    tags        = "debian"
-    config = {
-      cpu    = 4
-      memory = 4048
-      disks = {
-        scsi1 = { size = "64G" } # configs
-      }
-      cloudinit = {
-        ip4_address = "192.168.2.152/24"
-      }
-    }
-  }
-  stoxnas = {
+  stoxnas = { # delme
     description = "NAS"
     template    = "debian13-cloudinit"
     tags        = "debian"
@@ -81,7 +63,7 @@ proxmox_vms = {
       }
     }
   }
-  netxdns = {
+  netxdns = { # delme
     description = "DNS Server"
     template    = "debian13-cloudinit"
     tags        = "debian"
@@ -92,5 +74,24 @@ proxmox_vms = {
         ip4_address = "192.168.2.110/24"
       }
     }
+  }
+}
+
+proxmox_lxc = {
+  stoxnas = {
+    description  = "NAS"
+    template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
+    tags         = "debian"
+
+    cpu          = 4
+    memory       = 8096
+    network_ipv4 = "192.168.2.60"
+  },
+  netxdns = {
+    description  = "DNS Server"
+    template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
+    tags         = "debian"
+
+    network_ipv4 = "192.168.2.110"
   }
 }

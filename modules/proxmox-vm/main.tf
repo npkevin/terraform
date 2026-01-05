@@ -79,6 +79,7 @@ resource "proxmox_vm_qemu" "vm-cloudinit" {
     ignore_changes = [
       onboot,
       startup,
+      cpu[0].affinity,
     ]
   }
 }
