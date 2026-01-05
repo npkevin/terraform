@@ -51,7 +51,7 @@ proxmox_lvm = {
       }
     }
   }
-  stoxnas = { # delme
+  stoxnas = { # todo: delme
     description = "NAS"
     template    = "debian13-cloudinit"
     tags        = "debian"
@@ -63,7 +63,7 @@ proxmox_lvm = {
       }
     }
   }
-  netxdns = { # delme
+  netxdns = { # todo: delme
     description = "DNS Server"
     template    = "debian13-cloudinit"
     tags        = "debian"
@@ -78,7 +78,7 @@ proxmox_lvm = {
 }
 
 proxmox_lxc = {
-  stoxnas = {
+  stoxnas = { # todo: createme
     description  = "NAS"
     template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
     tags         = "debian"
