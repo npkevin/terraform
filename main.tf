@@ -14,7 +14,7 @@ provider "proxmox" {
   pm_tls_insecure     = true
 }
 
-module "vm" {
+module "lvm" {
   source    = "./modules/proxmox-lvm"
   for_each  = var.proxmox_lvm
 
