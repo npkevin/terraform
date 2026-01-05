@@ -60,11 +60,13 @@ resource "proxmox_vm_qemu" "lvm" {
   dynamic "disk" {
     for_each = var.disks
     content {
-      slot    = disk.key
-      size    = disk.value.size
-      storage = disk.value.storage
-      type    = disk.value.type
-      format  = disk.value.format
+      slot     = disk.key
+      size     = disk.value.size
+      storage  = disk.value.storage
+      type     = disk.value.type
+      format   = disk.value.format
+      backup   = disk.value.backup
+      iothread = disk.value.iothread
     }
   }
 

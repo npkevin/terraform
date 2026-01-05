@@ -20,6 +20,8 @@ variable disks {
     storage = optional(string, "raid5") # e.g. "raid5"
     type    = optional(string, "disk")
     format  = optional(string, "raw") # tf complains
+    backup   = optional(bool, false)
+    iothread = optional(bool, true)
   }))
   default = {}
 }
