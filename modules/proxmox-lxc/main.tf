@@ -7,11 +7,11 @@ terraform {
   }
 }
 
-resource "proxmox_lxc" "lxc-container" {
+resource "proxmox_lxc" "lxc" {
   # proxmox config
   hostname    = var.name
   description = var.description
-  tags        = var.tags
+  tags        = join(",", var.tags)
   
   ostemplate   = var.template 
   target_node = "proxmox"
@@ -70,9 +70,9 @@ resource "proxmox_lxc" "lxc-container" {
 }
 
 resource "null_resource" "ansible_provision" {
-  depends_on = [proxmox_lxc.lxc-container]
+  depends_on = [proxmox_lxc.lxc]
   triggers = {
-    host = "${proxmox_lxc.lxc-container.hostname}.kevnp.lan"
+    host = "${proxmox_lxc.lxc.hostname}.kevnp.lan"
   }
   provisioner "local-exec" {
     environment = {

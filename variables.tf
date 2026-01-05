@@ -3,7 +3,7 @@ variable proxmox_lvm {
     # todo: add domain = "kevnp.lan"
     description = optional(string, "Terraform Managed Virtual Machine")
     template    = string
-    tags        = optional(string, "")
+    tags        = optional(list(string), [])
     config = object({
       cpu       = number
       memory    = number
@@ -29,7 +29,7 @@ variable proxmox_lxc {
     # todo: add domain = "kevnp.lan"
     description = optional(string, "Terraform Managed Virtual Machine")
     template    = string
-    tags        = optional(string, "")
+    tags        = optional(list(string), [])
 
     cpu       = optional(number)
     memory    = optional(number)

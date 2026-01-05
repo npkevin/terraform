@@ -1,7 +1,7 @@
 variable name        { type = string }
 variable description { type = string }
 variable template    { type = string }
-variable tags        { type = string }
+variable tags        { type = list(string) }
 
 # variable domain      { type = string }
 
@@ -17,7 +17,7 @@ variable memory    {
 variable disks {
   type = map(object({
     size    = string
-    storage = optional(string, "raid5")   # e.g. "raid5"
+    storage = optional(string, "raid5") # e.g. "raid5"
     type    = optional(string, "disk")
     format  = optional(string, "raw") # tf complains
   }))

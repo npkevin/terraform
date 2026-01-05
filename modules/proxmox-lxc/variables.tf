@@ -1,7 +1,7 @@
 variable name        { type = string }
 variable description { type = string }
 variable template    { type = string } # use full path: "local:vztmpl/debian-12..."
-variable tags        { type = string }
+variable tags        { type = list(string) }
 
 variable cpu {
   type    = number

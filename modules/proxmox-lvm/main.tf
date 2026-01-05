@@ -16,11 +16,11 @@ terraform {
 #   qm template 1000
 
 #  https://registry.terraform.io/providers/Telmate/proxmox/latest/docs/resources/vm_qemu
-resource "proxmox_vm_qemu" "vm-cloudinit" {
+resource "proxmox_vm_qemu" "lvm" {
   # proxmox config
   name        = var.name
   description = var.description
-  tags        = var.tags
+  tags        = join(",", var.tags)
   
   clone       = var.template
   target_node = "proxmox"
@@ -85,10 +85,10 @@ resource "proxmox_vm_qemu" "vm-cloudinit" {
 }
 
 resource "null_resource" "ansible_provision" {
-  depends_on = [proxmox_vm_qemu.vm-cloudinit]
+  depends_on = [proxmox_vm_qemu.lvm]
   triggers = {
-    host = "${proxmox_vm_qemu.vm-cloudinit.name}.kevnp.lan"
-    vm_ip = proxmox_vm_qemu.vm-cloudinit.default_ipv4_address
+    host = "${proxmox_vm_qemu.lvm.name}.kevnp.lan"
+    vm_ip = proxmox_vm_qemu.lvm.default_ipv4_address
   }
   provisioner "local-exec" {
     environment = {
