@@ -57,6 +57,7 @@ resource "proxmox_vm_qemu" "lvm" {
     format  = "raw" # tf complains
   }
 
+  # extra disks, mounted via ansible
   dynamic "disk" {
     for_each = var.disks
     content {
@@ -88,19 +89,29 @@ resource "proxmox_vm_qemu" "lvm" {
 
 resource "null_resource" "ansible_provision" {
   depends_on = [proxmox_vm_qemu.lvm]
-  triggers = {
-    host = "${proxmox_vm_qemu.lvm.name}.kevnp.lan"
-    vm_ip = proxmox_vm_qemu.lvm.default_ipv4_address
+  triggers = { # todo: do i really needs all of these triggers?
+    vm_name = proxmox_vm_qemu.lvm.name
+    vm_id   = proxmox_vm_qemu.lvm.id
+    vm_ip   = proxmox_vm_qemu.lvm.default_ipv4_address
+  }
+  connection {
+    type        = "ssh"
+    user        = "root"
+    private_key = file("~/ansible/roles/base/files/ssh/root")
+    host        = proxmox_vm_qemu.lvm.name
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'Waiting for cloud-init...'",
+      "cloud-init status --wait > /dev/null"
+    ]
   }
   provisioner "local-exec" {
-    environment = {
-      ANSIBLE_CONFIG = "~/ansible/ansible.cfg"
-    }
-    # todo: dynamic zone names (kevnp.lan)
     command = <<EOT
-      ansible-playbook \
-        -l '${self.triggers.host},' \
-        ~/ansible/servers/provision.yml
+    ANSIBLE_CONFIG=~/ansible/ansible.cfg \
+    ansible-playbook \
+      -l '${self.triggers.vm_name}.kevnp.lan' \
+      ~/ansible/servers/provision.yml
     EOT
   }
 }
