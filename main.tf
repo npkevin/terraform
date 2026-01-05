@@ -15,7 +15,7 @@ provider "proxmox" {
 }
 
 module "vm" {
-  source    = "./modules/proxmox-;vm"
+  source    = "./modules/proxmox-lvm"
   for_each  = var.proxmox_lvm
 
   name        = each.key
