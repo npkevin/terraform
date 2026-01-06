@@ -68,17 +68,19 @@ proxmox_lxc = {
     description  = "NAS"
     template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
     tags         = ["debian", "lxc"]
-    # unprivileged = false
-
+    unprivileged = false
     cpu          = 4
     memory       = 8096
+    mountpoints = [
+      # storage usually not a path.. /mnt/md0(host) -> /mnt/md0(lxc)
+      { storage = "/mnt/md0", size = "0T", mount = "/mnt/md0" },
+    ]
     network_ipv4 = "192.168.2.60"
   },
   netxdns = {
     description  = "DNS Server"
     template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
     tags         = ["debian", "lxc"]
-
     network_ipv4 = "192.168.2.110"
   }
 }

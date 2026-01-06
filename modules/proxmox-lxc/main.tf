@@ -24,27 +24,22 @@ resource "proxmox_lxc" "lxc" {
   memory = var.memory
   swap   = 512
 
-  # Root Filesystem (Equivalent to your boot disk)
   rootfs {
     storage = var.root_storage
     size    = var.root_size
   }
 
-  # Dynamic Mount Points (Equivalent to your dynamic "disk" block)
-  # LXC uses mp0, mp1, etc.
-  dynamic "mountpoint" {
-    for_each = var.mountpoints
+  dynamic "mountpoint" {    
+    for_each = { for index, mp in var.mountpoints : index => mp }
     content {
-      key     = mountpoint
-      slot    = mountpoint.key 
+      slot    = mountpoint.key           # use index
+      key     = tostring(mountpoint.key) # use index
       storage = mountpoint.value.storage
-      mp      = mountpoint.value.mp
       size    = mountpoint.value.size
+      mp      = mountpoint.value.mount
     }
   }
 
-  # Network Configuration
-  # We map your 'cloudinit' variable object here
   network {
     name   = "eth0"
     bridge = "vmbr0"
@@ -65,7 +60,6 @@ resource "proxmox_lxc" "lxc" {
     ignore_changes = [
       network,
       target_node,
-      unprivileged,
     ]
   }
 }

@@ -1,6 +1,6 @@
 variable name        { type = string }
 variable description { type = string }
-variable template    { type = string } # use full path: "local:vztmpl/debian-12..."
+variable template    { type = string } # "local:vztmpl/..."
 variable tags        { type = list(string) }
 
 variable unprivileged {
@@ -35,10 +35,10 @@ variable root_size {
 }
 
 variable mountpoints {
-  type = map(object({
-    storage = optional(string, "local-lvm")
-    size    = optional(string, "8G")
-    mp      = optional(string, "/mnt/data")
+  type = list(object({
+    storage = string
+    size    = string
+    mount   = string
   }))
-  default = {}
+  default = []
 }

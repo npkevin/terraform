@@ -32,7 +32,7 @@ variable proxmox_lxc {
     description  = optional(string, "Terraform Managed Virtual Machine")
     template     = string
     tags         = optional(list(string), [])
-    unprivileged = optional(bool)
+    unprivileged = optional(bool, true)
 
     cpu          = optional(number)
     memory       = optional(number)
@@ -42,10 +42,10 @@ variable proxmox_lxc {
     dns_primary     = optional(string, "192.168.2.110")
     dns_secondary   = optional(string, "1.1.1.1")
 
-    mountpoints = optional(map(object({
-      type    = optional(string)  
-      storage = optional(string)
-      size    = string
-    })), {})
+    mountpoints = optional(list(object({
+      storage = optional(string, "local-lvm")
+      size    = optional(string, "8G")
+      mount   = string
+    })), [])
   }))
 }
