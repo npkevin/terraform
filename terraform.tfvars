@@ -72,7 +72,8 @@ proxmox_lxc = {
     cpu          = 4
     memory       = 8096
     mountpoints = [
-      # storage usually not a path.. /mnt/md0(host) -> /mnt/md0(lxc)
+      # tf apply, then edit manually or else you get storage = "/mnt/md0:0"
+      # root@proxmox:~# nano /etc/pve/lxc/103.conf
       { storage = "/mnt/md0", size = "0T", mount = "/mnt/md0" },
     ]
     network_ipv4 = "192.168.2.60"

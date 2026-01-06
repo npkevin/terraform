@@ -32,8 +32,8 @@ resource "proxmox_lxc" "lxc" {
   dynamic "mountpoint" {    
     for_each = { for index, mp in var.mountpoints : index => mp }
     content {
-      slot    = mountpoint.key           # use index
-      key     = tostring(mountpoint.key) # use index
+      key     = mountpoint.key           # use index
+      slot    = tostring(mountpoint.key) # use index
       storage = mountpoint.value.storage
       size    = mountpoint.value.size
       mp      = mountpoint.value.mount
