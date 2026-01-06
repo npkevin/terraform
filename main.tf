@@ -38,6 +38,7 @@ module "lxc" {
   description     = each.value.description
   template        = each.value.template
   tags            = each.value.tags
+  unprivileged    = each.value.unprivileged
 
   cpu             = each.value.cpu
   memory          = each.value.memory

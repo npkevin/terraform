@@ -3,6 +3,11 @@ variable description { type = string }
 variable template    { type = string } # use full path: "local:vztmpl/debian-12..."
 variable tags        { type = list(string) }
 
+variable unprivileged {
+  type = bool
+  default = true
+}
+
 variable cpu {
   type    = number
   default = 1

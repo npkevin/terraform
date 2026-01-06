@@ -15,7 +15,7 @@ resource "proxmox_lxc" "lxc" {
   
   ostemplate   = var.template 
   target_node = "proxmox"
-  unprivileged = true
+  unprivileged = var.unprivileged
   start        = true
   onboot       = true
 
@@ -64,7 +64,8 @@ resource "proxmox_lxc" "lxc" {
   lifecycle {
     ignore_changes = [
       network,
-      target_node
+      target_node,
+      unprivileged,
     ]
   }
 }
