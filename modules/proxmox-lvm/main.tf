@@ -71,6 +71,16 @@ resource "proxmox_vm_qemu" "lvm" {
     }
   }
 
+  # dynamic "virtiofs" {
+  #   for_each = contains(var.tags, "raid5") ? [1] : []
+  #   content {
+  #     iothread  = true
+  #     tag       = "md0"
+  #     cache     = "always"
+  #     direct_io = false
+  #   }
+  # }
+
   network {
     id       = 0
     bridge   = "vmbr0"
