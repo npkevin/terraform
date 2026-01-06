@@ -68,6 +68,7 @@ proxmox_lxc = {
     description  = "NAS"
     template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
     tags         = ["debian", "lxc"]
+    # unprivileged = false
 
     cpu          = 4
     memory       = 8096
