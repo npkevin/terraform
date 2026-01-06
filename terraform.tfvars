@@ -61,23 +61,35 @@ proxmox_lvm = {
       }
     }
   }
+  stoxnas = {
+    description = "Network Attached Storage"
+    template    = "debian13-cloudinit"
+    tags        = ["debian", "lvm"]
+    config = {
+      cpu    = 4
+      memory = 4096
+      cloudinit = {
+        ip4_address = "192.168.2.60"
+      }
+    }
+  }
 }
 
 proxmox_lxc = {
-  stoxnas = {
-    description  = "NAS"
-    template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
-    tags         = ["debian", "lxc"]
-    unprivileged = false
-    cpu          = 4
-    memory       = 8096
-    mountpoints = [
-      # tf apply, then edit manually or else you get storage = "/mnt/md0:0"
-      # root@proxmox:~# nano /etc/pve/lxc/103.conf
-      { storage = "/mnt/md0", size = "0T", mount = "/mnt/md0" },
-    ]
-    network_ipv4 = "192.168.2.60"
-  },
+  # stoxnas = {
+  #   description  = "NAS"
+  #   template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
+  #   tags         = ["debian", "lxc"]
+  #   unprivileged = false
+  #   cpu          = 4
+  #   memory       = 8096
+  #   mountpoints = [
+  #     # tf apply, then edit manually or else you get storage = "/mnt/md0:0"
+  #     # root@proxmox:~# nano /etc/pve/lxc/103.conf
+  #     { storage = "/mnt/md0", size = "0T", mount = "/mnt/md0" },
+  #   ]
+  #   network_ipv4 = "192.168.2.60"
+  # },
   netxdns = {
     description  = "DNS Server"
     template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
