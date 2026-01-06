@@ -1,7 +1,7 @@
 variable proxmox_lvm {
   type = map(object({
     # todo: add domain = "kevnp.lan"
-    description = optional(string, "Terraform Managed Virtual Machine")
+    description = optional(string, "Terraform Managed VM")
     template    = string
     tags        = optional(list(string), [])
     config = object({
@@ -29,7 +29,7 @@ variable proxmox_lvm {
 variable proxmox_lxc {
   type = map(object({
     # todo: add domain = "kevnp.lan"
-    description  = optional(string, "Terraform Managed Virtual Machine")
+    description  = optional(string, "Terraform Managed LXC")
     template     = string
     tags         = optional(list(string), [])
     unprivileged = optional(bool, true)
