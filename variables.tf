@@ -12,7 +12,8 @@ variable proxmox_lvm {
         type    = optional(string)  
         storage = optional(string)
         format  = optional(string)
-        size    = string
+        size    = optional(string)
+        mount   = optional(string)
       })), {})
 
       cloudinit = object({

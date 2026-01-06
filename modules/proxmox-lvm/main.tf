@@ -111,6 +111,12 @@ resource "null_resource" "ansible_provision" {
     ANSIBLE_CONFIG=~/ansible/ansible.cfg \
     ansible-playbook \
       -l '${self.triggers.vm_name}.kevnp.lan' \
+      -e 'terraform_disks=${jsonencode([
+        for key, value in var.disks : {
+          slot = key,
+          mount = value.mount
+        }
+      ])}' \
       ~/ansible/servers/provision.yml
     EOT
   }

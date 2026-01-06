@@ -11,6 +11,7 @@ proxmox_lvm = {
           size    = "64G"
           storage = "appdata"
           format  = "qcow2"
+          mount   = "/mnt/app"
         } 
       }
       cloudinit = {
@@ -18,7 +19,6 @@ proxmox_lvm = {
       }
     }
   }
-
   labxadm1 = { # 📍
     description = "Administrator 1"
     template    = "debian13-cloudinit"
@@ -50,8 +50,11 @@ proxmox_lvm = {
     config = {
       cpu    = 4
       memory = 4048
-      disks = {
-        scsi1 = { size = "64G" } # configs
+      disks = { # configs
+        scsi1 = {
+          size    = "64G"
+          mount   = "/mnt/app"
+        }
       }
       cloudinit = {
         ip4_address = "192.168.2.151/24"
