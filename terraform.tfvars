@@ -15,7 +15,7 @@ proxmox_lvm = {
         } 
       }
       cloudinit = {
-        ip4_address = "192.168.2.220/24"
+        ip4_address = "192.168.2.220"
       }
     }
   }
@@ -27,7 +27,7 @@ proxmox_lvm = {
       cpu    = 4
       memory = 8192
       cloudinit = {
-        ip4_address = "192.168.2.201/24"
+        ip4_address = "192.168.2.201"
       }
     }
   }
@@ -39,7 +39,7 @@ proxmox_lvm = {
       cpu    = 4
       memory = 8192
       cloudinit = {
-        ip4_address = "192.168.2.202/24"
+        ip4_address = "192.168.2.202"
       }
     }
   }
@@ -57,7 +57,7 @@ proxmox_lvm = {
         }
       }
       cloudinit = {
-        ip4_address = "192.168.2.151/24"
+        ip4_address = "192.168.2.151"
       }
     }
   }

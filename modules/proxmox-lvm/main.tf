@@ -32,7 +32,7 @@ resource "proxmox_vm_qemu" "lvm" {
   sshkeys    = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKszs9IEIeH7AluwbOx8hSQKOeOWFPkn3Tm+qRfsYAa root"
   cicustom   = "vendor=local:snippets/qemu-guest-agent.yml" # proxmox-root:/var/lib/vz/snippets/qemu-guest-agent.yml
   nameserver = "${var.cloudinit.dns_primary} ${var.cloudinit.dns_secondary}"
-  ipconfig0  = "ip=${var.cloudinit.ip4_address},gw=${var.cloudinit.gateway}"
+  ipconfig0  = "ip=${var.cloudinit.ip4_address}/24,gw=${var.cloudinit.gateway}"
   skip_ipv6  = true
   ciupgrade  = true
 
