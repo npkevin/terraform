@@ -25,7 +25,7 @@ resource "proxmox_virtual_environment_container" "lxc" {
     }
     ip_config {
       ipv4 {
-        address = var.network_ipv4
+        address = "${var.network_ipv4}/24"
         gateway = var.network_gateway
       }
     }
@@ -88,17 +88,11 @@ resource "null_resource" "ansible_provision" {
   triggers = {
     vm_name = proxmox_virtual_environment_container.lxc.initialization[0].hostname
   }
-  connection {
-    type        = "ssh"
-    user        = "root"
-    private_key = file("~/ansible/roles/base/files/ssh/root")
-    host        = proxmox_virtual_environment_container.lxc.initialization[0].hostname
-  }
   provisioner "local-exec" {
     command = <<EOT
     ANSIBLE_CONFIG=~/ansible/ansible.cfg \
     ansible-playbook \
-      -l '${self.triggers.hostname}.kevnp.lan,' \
+      -l '${self.triggers.vm_name}.kevnp.lan,' \
       ~/ansible/servers/provision.yml
     EOT
   }

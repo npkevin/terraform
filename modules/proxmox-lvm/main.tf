@@ -14,11 +14,11 @@ resource "proxmox_virtual_environment_vm" "lvm" {
   tags        = var.tags
   node_name   = "proxmox"
   
-  agent { enabled = true }
+  # agent { enabled = true }
 
   # cloud-init
   initialization {
-    datastore_id = "raid5"
+    datastore_id = "local-lvm"
     interface    = "ide2"
     user_account {
       username = "root"
@@ -27,7 +27,7 @@ resource "proxmox_virtual_environment_vm" "lvm" {
     }
     ip_config {
       ipv4 {
-        address = var.cloudinit.ip4_address
+        address = "${var.cloudinit.ip4_address}/24"
         gateway = var.cloudinit.gateway
       }
     }
