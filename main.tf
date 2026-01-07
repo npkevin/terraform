@@ -4,7 +4,6 @@ module "lvm" {
 
   name        = each.key
   description = each.value.description
-  template    = each.value.template
   tags        = each.value.tags
 
   cpu_cores   = each.value.config.cpu
@@ -20,7 +19,6 @@ module "lxc" {
 
   name            = each.key
   description     = each.value.description
-  template        = each.value.template
   tags            = each.value.tags
   unprivileged    = each.value.unprivileged
 

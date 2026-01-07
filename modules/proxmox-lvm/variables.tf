@@ -1,6 +1,5 @@
 variable name        { type = string }
 variable description { type = string }
-variable template    { type = string }
 variable tags        { type = list(string) }
 
 # variable domain      { type = string }
@@ -18,7 +17,6 @@ variable disks {
   type = map(object({
     size    = optional(string, "32G")
     storage = optional(string, "raid5")
-    type    = optional(string, "disk")
     format  = optional(string, "raw") # tf complains
     backup   = optional(bool, false)
     iothread = optional(bool, true)

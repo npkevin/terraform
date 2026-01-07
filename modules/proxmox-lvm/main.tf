@@ -7,108 +7,111 @@ terraform {
   }
 }
 
-# Uploading Cloud-Init Image
-# - create vm, set scsi0 to raid5, import image from proxmox/root/deb13.qcow2, convert to template
-# proxmox-root:
-#   wget https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2
-#   qm create 1000 --name debian13-cloudinit
-#   qm set 1000 --scsi0 raid5:0,import-from=/root/debian-13-genericcloud-amd64.qcow2
-#   qm template 1000
-
-#  https://registry.terraform.io/providers/Telmate/proxmox/latest/docs/resources/vm_qemu
-resource "proxmox_vm_qemu" "lvm" {
+resource "proxmox_virtual_environment_vm" "lvm" {
   # proxmox config
   name        = var.name
   description = var.description
-  tags        = join(",", var.tags)
+  tags        = var.tags
+  node_name   = "proxmox"
   
-  clone       = var.template
-  target_node = "proxmox"
-  scsihw      = "virtio-scsi-single"
-  agent       = 1
+  agent { enabled = true }
 
-  # cloudinit
-  ciuser     = "root"
-  sshkeys    = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKszs9IEIeH7AluwbOx8hSQKOeOWFPkn3Tm+qRfsYAa root"
-  cicustom   = "vendor=local:snippets/qemu-guest-agent.yml" # proxmox-root:/var/lib/vz/snippets/qemu-guest-agent.yml
-  nameserver = "${var.cloudinit.dns_primary} ${var.cloudinit.dns_secondary}"
-  ipconfig0  = "ip=${var.cloudinit.ip4_address}/24,gw=${var.cloudinit.gateway}"
-  skip_ipv6  = true
-  ciupgrade  = true
-
-  # cloud-init cdrom
-  disk {
-    slot    = "ide2"
-    type    = "cloudinit"
-    storage = "raid5"
+  # cloud-init
+  initialization {
+    datastore_id = "raid5"
+    interface    = "ide2"
+    user_account {
+      username = "root"
+      password = "changeme"
+      keys     = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKszs9IEIeH7AluwbOx8hSQKOeOWFPkn3Tm+qRfsYAa root"]
+    }
+    ip_config {
+      ipv4 {
+        address = var.cloudinit.ip4_address
+        gateway = var.cloudinit.gateway
+      }
+    }
+    dns {
+      domain  = "kevnp.lan"
+      servers = [var.cloudinit.dns_primary, var.cloudinit.dns_secondary]
+    }
   }
 
   # hardware specifications
-  cpu { cores = var.cpu_cores }
-  memory      = var.memory
+  cpu {
+    cores = var.cpu_cores
+    type  = "x86-64-v2-AES"
+  }
+  memory {
+    dedicated = var.memory
+    floating  = var.memory # equal for ballooning
+  } 
 
-  # root/system disk
-  boot      = "order=scsi0" 
+  # OS Disk
   disk {
-    slot    = "scsi0"
-    type    = "disk"
-    storage = "raid5"
-    size    = "16G"
-    format  = "raw" # tf complains
+    datastore_id = "local-lvm"
+    size         = 16
+    interface    = "virtio0"
+    import_from  = proxmox_virtual_environment_download_file.debian_13_trixie_qcow2.id
+    file_format  = "qcow2"
+    
+    backup       = false
+    iothread     = true
+    discard      = "on"
   }
 
   # extra disks, mounted via ansible
   dynamic "disk" {
     for_each = var.disks
     content {
-      slot     = disk.key
-      size     = disk.value.size
-      storage  = disk.value.storage
-      type     = disk.value.type
-      format   = disk.value.format
-      backup   = disk.value.backup
-      iothread = disk.value.iothread
+      datastore_id  = disk.value.storage
+      interface     = disk.key
+      file_format   = disk.value.format
+      size          = disk.value.size
+      backup        = disk.value.backup
+      iothread      = disk.value.iothread
     }
   }
 
-  # dynamic "virtiofs" {
-  #   for_each = contains(var.tags, "raid5") ? [1] : []
-  #   content {
-  #     iothread  = true
-  #     tag       = "md0"
-  #     cache     = "always"
-  #     direct_io = false
-  #   }
-  # }
+  # only maps when raid5 is tagged
+  dynamic "virtiofs" {
+    for_each = contains(var.tags, "raid5") ? [1] : []
+    content {
+      mapping   = "md0"
+      cache     = "always"
+      direct_io = true
+    }
+  }
 
-  network {
-    id       = 0
-    bridge   = "vmbr0"
-    model    = "virtio"
+  network_device {
+    bridge = "vmbr0"
     firewall = true
   }
 
   lifecycle {
     ignore_changes = [
-      onboot,
-      startup,
-      cpu[0].affinity,
     ]
   }
 }
 
+resource "proxmox_virtual_environment_download_file" "debian_13_trixie_qcow2" {
+  node_name    = "proxmox"
+  datastore_id = "raid5"
+  url          = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2"
+  file_name    = "debian-13-genericcloud-amd64.qcow2"
+  content_type = "import"
+}
+
 resource "null_resource" "ansible_provision" {
-  depends_on = [proxmox_vm_qemu.lvm]
-  triggers = { # todo: do i really needs all of these triggers?
-    vm_name = proxmox_vm_qemu.lvm.name
-    vm_id   = proxmox_vm_qemu.lvm.id
-    vm_ip   = proxmox_vm_qemu.lvm.default_ipv4_address
+  depends_on = [proxmox_virtual_environment_vm.lvm]
+  triggers = {
+    vm_name = proxmox_virtual_environment_vm.lvm.name
   }
   connection {
     type        = "ssh"
     user        = "root"
     private_key = file("~/ansible/roles/base/files/ssh/root")
-    host        = proxmox_vm_qemu.lvm.name
+    host        = proxmox_virtual_environment_vm.lvm.name
   }
   provisioner "remote-exec" {
     inline = [
