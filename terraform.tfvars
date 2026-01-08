@@ -8,7 +8,7 @@ proxmox_lvm = {
       memory = 32768
       disks = { # world data
         scsi1 = {
-          size    = "64G"
+          size    = 64
           storage = "appdata"
           format  = "qcow2"
           mount   = "/mnt/app"
@@ -52,7 +52,7 @@ proxmox_lvm = {
       memory = 4048
       disks = { # configs
         scsi1 = {
-          size    = "64G"
+          size    = 64
           mount   = "/mnt/app"
         }
       }

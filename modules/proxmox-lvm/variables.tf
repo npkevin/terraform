@@ -15,7 +15,7 @@ variable memory    {
 
 variable disks {
   type = map(object({
-    size    = optional(string, "32G")
+    size    = optional(number, 32)
     storage = optional(string, "raid5")
     format  = optional(string, "raw") # tf complains
     backup   = optional(bool, false)
