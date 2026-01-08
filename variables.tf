@@ -9,9 +9,9 @@ variable proxmox_lvm {
 
       disks = optional(map(object({
         type    = optional(string)  
-        storage = optional(number)
+        storage = optional(string)
         format  = optional(string)
-        size    = optional(string)
+        size    = optional(number)
         mount   = optional(string)
       })), {})
 
