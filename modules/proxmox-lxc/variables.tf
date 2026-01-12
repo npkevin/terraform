@@ -7,6 +7,10 @@ variable unprivileged {
   default = true
 }
 
+variable template_id {
+  type = number
+}
+
 variable cpu {
   type    = number
   default = 1

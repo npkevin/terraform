@@ -3,6 +3,7 @@ variable proxmox_lvm {
     # todo: add domain = "kevnp.lan"
     description = optional(string, "Terraform Managed VM")
     tags        = optional(list(string), [])
+    qemu_agent  = optional(bool)
     config = object({
       cpu       = number
       memory    = number

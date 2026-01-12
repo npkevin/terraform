@@ -4,10 +4,20 @@ variable tags        { type = list(string) }
 
 # variable domain      { type = string }
 
+variable image_id {
+  type = string
+}
+
+variable qemu_agent {
+  type = bool
+  default = false
+}
+
 variable cpu_cores {
   type = number
   default = 2
 }
+
 variable memory    {
   type = number
   default = 512

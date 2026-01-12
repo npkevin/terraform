@@ -14,7 +14,7 @@ resource "proxmox_virtual_environment_vm" "lvm" {
   tags        = var.tags
   node_name   = "proxmox"
   
-  # agent { enabled = true }
+  agent { enabled = var.qemu_agent }
 
   # cloud-init
   initialization {
@@ -52,7 +52,7 @@ resource "proxmox_virtual_environment_vm" "lvm" {
     datastore_id = "local-lvm"
     size         = 16
     interface    = "virtio0"
-    import_from  = proxmox_virtual_environment_download_file.debian_13_trixie_qcow2.id
+    import_from  = var.image_id
     file_format  = "qcow2"
     
     backup       = false
@@ -90,16 +90,9 @@ resource "proxmox_virtual_environment_vm" "lvm" {
 
   lifecycle {
     ignore_changes = [
+      disk[0].file_format
     ]
   }
-}
-
-resource "proxmox_virtual_environment_download_file" "debian_13_trixie_qcow2" {
-  node_name    = "proxmox"
-  datastore_id = "raid5"
-  url          = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2"
-  file_name    = "debian-13-genericcloud-amd64.qcow2"
-  content_type = "import"
 }
 
 resource "null_resource" "ansible_provision" {

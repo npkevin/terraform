@@ -50,7 +50,7 @@ resource "proxmox_virtual_environment_container" "lxc" {
     size         = 8
   }
   operating_system {
-    template_file_id = proxmox_virtual_environment_download_file.debian_12_lxc_template.id
+    template_file_id = var.template_id
     type             = "debian"
   }
 
@@ -73,14 +73,6 @@ resource "proxmox_virtual_environment_container" "lxc" {
     ignore_changes = [
     ]
   }
-}
-
-resource "proxmox_virtual_environment_download_file" "debian_12_lxc_template" {
-  node_name    = "proxmox"
-  datastore_id = "raid5"
-  url          = "http://download.proxmox.com/images/system/debian-12-standard_12.7-1_amd64.tar.zst"
-  file_name    = "debian-12-standard-amd64.tar.zst"
-  content_type = "vztmpl"
 }
 
 resource "null_resource" "ansible_provision" {
