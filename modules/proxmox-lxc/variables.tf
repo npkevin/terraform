@@ -8,7 +8,7 @@ variable unprivileged {
 }
 
 variable template_id {
-  type = number
+  type = string
 }
 
 variable cpu {

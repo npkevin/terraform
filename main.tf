@@ -6,11 +6,11 @@ resource "proxmox_virtual_environment_download_file" "debian_13_trixie_qcow2" {
   content_type = "import"
 }
 
-resource "proxmox_virtual_environment_download_file" "debian_12_lxc_template" {
+resource "proxmox_virtual_environment_download_file" "debian_13_lxc_template" {
   node_name    = "proxmox"
   datastore_id = "raid5"
-  url          = "http://download.proxmox.com/images/system/debian-12-standard_12.7-1_amd64.tar.zst"
-  file_name    = "debian-12-standard-amd64.tar.zst"
+  url          = "http://download.proxmox.com/images/system/debian-13-standard_13.1-2_amd64.tar.zst"
+  file_name    = "debian-13-standard-amd64.tar.zst"
   content_type = "vztmpl"
 }
 
@@ -50,5 +50,5 @@ module "lxc" {
   dns_primary     = each.value.dns_primary
   dns_secondary   = each.value.dns_secondary
 
-  template_id = proxmox_virtual_environment_download_file.debian_12_lxc_template.id
+  template_id = proxmox_virtual_environment_download_file.debian_13_lxc_template.id
 }
