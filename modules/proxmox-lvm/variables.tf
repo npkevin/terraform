@@ -1,14 +1,23 @@
 variable name        { type = string }
 variable description { type = string }
-variable template    { type = string }
 variable tags        { type = list(string) }
 
 # variable domain      { type = string }
+
+variable image_id {
+  type = string
+}
+
+variable qemu_agent {
+  type = bool
+  default = false
+}
 
 variable cpu_cores {
   type = number
   default = 2
 }
+
 variable memory    {
   type = number
   default = 512
@@ -16,9 +25,8 @@ variable memory    {
 
 variable disks {
   type = map(object({
-    size    = optional(string, "32G")
+    size    = optional(number, 32)
     storage = optional(string, "raid5")
-    type    = optional(string, "disk")
     format  = optional(string, "raw") # tf complains
     backup   = optional(bool, false)
     iothread = optional(bool, true)

@@ -2,8 +2,8 @@ variable proxmox_lvm {
   type = map(object({
     # todo: add domain = "kevnp.lan"
     description = optional(string, "Terraform Managed VM")
-    template    = string
     tags        = optional(list(string), [])
+    qemu_agent  = optional(bool)
     config = object({
       cpu       = number
       memory    = number
@@ -12,7 +12,7 @@ variable proxmox_lvm {
         type    = optional(string)  
         storage = optional(string)
         format  = optional(string)
-        size    = optional(string)
+        size    = optional(number)
         mount   = optional(string)
       })), {})
 
@@ -30,7 +30,6 @@ variable proxmox_lxc {
   type = map(object({
     # todo: add domain = "kevnp.lan"
     description  = optional(string, "Terraform Managed LXC")
-    template     = string
     tags         = optional(list(string), [])
     unprivileged = optional(bool, true)
 
@@ -47,5 +46,12 @@ variable proxmox_lxc {
       size    = optional(string, "8G")
       mount   = string
     })), [])
+
+    features = optional(object({
+      nesting = optional(bool)
+      fuse    = optional(bool)
+      keyctl  = optional(bool)
+      mount   = optional(list(string))
+    }), {})
   }))
 }
