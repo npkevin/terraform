@@ -29,6 +29,9 @@ module "lvm" {
 
   cloudinit   = each.value.config.cloudinit
 
+  root_password   = var.guest_root_password
+  root_public_key  = var.root_public_key
+
   image_id = proxmox_virtual_environment_download_file.debian_13_trixie_qcow2.id
 }
 
@@ -51,6 +54,9 @@ module "lxc" {
   dns_secondary   = each.value.dns_secondary
 
   features        = try(each.value.features, { nesting = true })
+
+  root_password   = var.guest_root_password
+  root_public_key  = var.root_public_key
 
   template_id = proxmox_virtual_environment_download_file.debian_13_lxc_template.id
 }

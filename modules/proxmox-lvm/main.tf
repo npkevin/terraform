@@ -22,8 +22,8 @@ resource "proxmox_virtual_environment_vm" "lvm" {
     interface    = "ide2"
     user_account {
       username = "root"
-      password = "changeme"
-      keys     = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKszs9IEIeH7AluwbOx8hSQKOeOWFPkn3Tm+qRfsYAa root"]
+      password = var.root_password
+      keys     = [var.root_public_key]
     }
     ip_config {
       ipv4 {

@@ -43,3 +43,12 @@ variable cloudinit {
     dns_secondary = string
   })
 }
+
+variable root_password {
+  type      = string
+  sensitive = true
+}
+
+variable root_public_key {
+  type = string
+}

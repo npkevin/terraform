@@ -55,3 +55,25 @@ variable proxmox_lxc {
     }), {})
   }))
 }
+
+variable "proxmox_api" {
+  description = "Proxmox API connection details."
+  type = object({
+    endpoint = string
+    username = string
+    password = string
+    insecure = optional(bool, false)
+  })
+  sensitive = true
+}
+
+variable "guest_root_password" {
+  description = "Root password for provisioned guests."
+  type        = string
+  sensitive   = true
+}
+
+variable "root_public_key" {
+  description = "SSH public key injected into guests."
+  type        = string
+}
