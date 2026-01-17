@@ -46,5 +46,12 @@ variable proxmox_lxc {
       size    = optional(string, "8G")
       mount   = string
     })), [])
+
+    features = optional(object({
+      nesting = optional(bool)
+      fuse    = optional(bool)
+      keyctl  = optional(bool)
+      mount   = optional(list(string))
+    }), {})
   }))
 }

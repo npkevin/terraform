@@ -50,5 +50,7 @@ module "lxc" {
   dns_primary     = each.value.dns_primary
   dns_secondary   = each.value.dns_secondary
 
+  features        = try(each.value.features, { nesting = true })
+
   template_id = proxmox_virtual_environment_download_file.debian_13_lxc_template.id
 }

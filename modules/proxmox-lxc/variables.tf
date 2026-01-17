@@ -35,3 +35,15 @@ variable mountpoints {
   }))
   default = []
 }
+
+variable features {
+  type = object({
+    nesting = optional(bool)
+    fuse    = optional(bool)
+    keyctl  = optional(bool)
+    mount   = optional(list(string))
+  })
+  default = {
+    nesting = true
+  }
+}

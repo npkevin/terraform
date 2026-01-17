@@ -14,7 +14,12 @@ resource "proxmox_virtual_environment_container" "lxc" {
   node_name = "proxmox"
 
   unprivileged = var.unprivileged
-  features { nesting = true } # required for docker 
+  features {
+    nesting = coalesce(try(var.features.nesting, null), true)
+    fuse    = try(var.features.fuse, null)
+    keyctl  = try(var.features.keyctl, null)
+    mount   = try(var.features.mount, null)
+  } # nesting is required for docker
 
   initialization {
     hostname    = var.name
