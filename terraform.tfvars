@@ -1,24 +1,24 @@
 proxmox_lvm = {
-  minecraft = {
-    description = "Minecraft"
-    template    = "debian13-cloudinit"
-    tags        = ["debian", "lvm"]
-    config = {
-      cpu    = 4
-      memory = 32768
-      disks = { # world data
-        scsi1 = {
-          size    = 64
-          storage = "appdata"
-          format  = "qcow2"
-          mount   = "/mnt/app"
-        } 
-      }
-      cloudinit = {
-        ip4_address = "192.168.2.220"
-      }
-    }
-  }
+  # minecraft = {
+  #   description = "Minecraft"
+  #   template    = "debian13-cloudinit"
+  #   tags        = ["debian", "lvm"]
+  #   config = {
+  #     cpu    = 4
+  #     memory = 32768
+  #     disks = { # world data
+  #       scsi1 = {
+  #         size    = 64
+  #         storage = "appdata"
+  #         format  = "qcow2"
+  #         mount   = "/mnt/app"
+  #       } 
+  #     }
+  #     cloudinit = {
+  #       ip4_address = "192.168.2.220"
+  #     }
+  #   }
+  # }
   labxadm1 = { # 📍
     description = "Administrator 1"
     template    = "debian13-cloudinit"
@@ -77,20 +77,6 @@ proxmox_lvm = {
 }
 
 proxmox_lxc = {
-  # stoxnas = {
-  #   description  = "NAS"
-  #   template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
-  #   tags         = ["debian", "lxc"]
-  #   unprivileged = false
-  #   cpu          = 4
-  #   memory       = 8096
-  #   mountpoints = [
-  #     # tf apply, then edit manually or else you get storage = "/mnt/md0:0"
-  #     # root@proxmox:~# nano /etc/pve/lxc/103.conf
-  #     { storage = "/mnt/md0", size = "0T", mount = "/mnt/md0" },
-  #   ]
-  #   network_ipv4 = "192.168.2.60"
-  # },
   netxdns = {
     description  = "DNS Server"
     template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
