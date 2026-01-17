@@ -67,7 +67,7 @@ variable "proxmox_api" {
   sensitive = true
 }
 
-variable "guest_root_password" {
+variable "root_password" {
   description = "Root password for provisioned guests."
   type        = string
   sensitive   = true
