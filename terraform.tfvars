@@ -2,7 +2,7 @@ proxmox_lvm = {
   labxadm1 = { # 📍
     description = "Administrator 1"
     template    = "debian13-cloudinit"
-    tags        = ["debian", "lvm"]
+    tags        = ["lvm-debian"]
     config = {
       cpu    = 4
       memory = 8192
@@ -14,7 +14,7 @@ proxmox_lvm = {
   labxadm2 = { # 📍
     description = "Administrator 2"
     template    = "debian13-cloudinit"
-    tags        = ["debian", "lvm"]
+    tags        = ["lvm-debian"]
     config = {
       cpu    = 4
       memory = 8192
@@ -26,7 +26,8 @@ proxmox_lvm = {
   medxarr = {
     description = "Media Management Server for *arr environment"
     template    = "debian13-cloudinit"
-    tags        = ["debian", "lvm", "raid5"]
+    tags        = ["lvm-debian", "raid5"]
+    qemu_agent  = true
     config = {
       cpu    = 4
       memory = 4048
@@ -44,7 +45,7 @@ proxmox_lvm = {
   stoxnas = {
     description = "Network Attached Storage"
     template    = "debian13-cloudinit"
-    tags        = ["debian", "lvm", "raid5"]
+    tags        = ["lvm-debian", "raid5"]
     qemu_agent  = true
     config = {
       cpu    = 4
@@ -57,10 +58,22 @@ proxmox_lvm = {
 }
 
 proxmox_lxc = {
+  medxjelly = {
+    description  = "Jellyfin Server"
+    template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
+    tags         = ["media"]
+    network_ipv4 = "192.168.2.150"
+  }
   netxdns = {
     description  = "DNS Server"
     template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
-    tags         = ["debian", "lxc"]
+    tags         = ["network"]
     network_ipv4 = "192.168.2.110"
+  }
+  netxedge = {
+    description  = "Network Edge Server"
+    template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
+    tags         = ["media", "network"]
+    network_ipv4 = "192.168.2.111"
   }
 }
