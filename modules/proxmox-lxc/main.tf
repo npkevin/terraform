@@ -14,6 +14,8 @@ locals {
     { path = "/dev/nvidiactl", mode = "0666" },
     { path = "/dev/nvidia-uvm", mode = "0666" },
     { path = "/dev/nvidia-uvm-tools", mode = "0666" },
+    { path = "/dev/nvidia-caps/nvidia-cap1", mode = "0400" },
+    { path = "/dev/nvidia-caps/nvidia-cap2", mode = "0444" },
   ]
 }
 
