@@ -36,6 +36,14 @@ variable mountpoints {
   default = []
 }
 
+variable devices {
+  type = list(object({
+    path = string
+    mode = string
+  }))
+  default = []
+}
+
 variable features {
   type = object({
     nesting = optional(bool)

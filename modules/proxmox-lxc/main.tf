@@ -7,6 +7,16 @@ terraform {
   }
 }
 
+locals {
+  gpu_enabled = contains([for t in var.tags : lower(t)], "gpu")
+  gpu_devices = [
+    { path = "/dev/nvidia0", mode = "0666" },
+    { path = "/dev/nvidiactl", mode = "0666" },
+    { path = "/dev/nvidia-uvm", mode = "0666" },
+    { path = "/dev/nvidia-uvm-tools", mode = "0666" },
+  ]
+}
+
 resource "proxmox_virtual_environment_container" "lxc" {
   # proxmox config
   description = "${var.description}\n"
@@ -65,6 +75,14 @@ resource "proxmox_virtual_environment_container" "lxc" {
       volume = mount_point.value.storage
       path   = mount_point.value.mount
       size   = mount_point.value.size
+    }
+  }
+
+  dynamic "device_passthrough" {
+    for_each = local.gpu_enabled ? local.gpu_devices : []
+    content {
+      path = device_passthrough.value.path
+      mode = device_passthrough.value.mode
     }
   }
 

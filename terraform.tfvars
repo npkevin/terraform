@@ -3,6 +3,7 @@ proxmox_lvm = {
     description = "Administrator 1"
     template    = "debian13-cloudinit"
     tags        = ["lvm-debian"]
+    # qemu_agent  = true
     config = {
       cpu    = 4
       memory = 8192
@@ -61,7 +62,17 @@ proxmox_lxc = {
   medxjelly = {
     description  = "Jellyfin Server"
     template     = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
-    tags         = ["media"]
+    tags         = ["media", "gpu"]
+    unprivileged = false
+    cpu          = 4
+    memory       = 4096
+    mountpoints = [
+      { storage = "/mnt/md0/Library", size = null,  mount = "/mnt/library" }, # null for directory
+      { storage = "appdata",          size = "16G", mount = "/mnt/data" },
+    ]
+    devices = [
+      { path = "/dev", mode = ""}
+    ]
     network_ipv4 = "192.168.2.150"
   }
   netxdns = {
