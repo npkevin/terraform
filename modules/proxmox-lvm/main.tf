@@ -7,6 +7,10 @@ terraform {
   }
 }
 
+locals {
+  raid5_enabled = contains([for t in var.tags : lower(t)], "raid5")
+}
+
 resource "proxmox_virtual_environment_vm" "lvm" {
   # proxmox config
   name        = var.name
@@ -75,7 +79,7 @@ resource "proxmox_virtual_environment_vm" "lvm" {
 
   # only maps when raid5 is tagged
   dynamic "virtiofs" {
-    for_each = contains(var.tags, "raid5") ? [1] : []
+    for_each = local.raid5_enabled ? [1] : []
     content {
       mapping   = "md0"
       cache     = "always"
