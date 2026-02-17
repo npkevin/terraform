@@ -70,9 +70,6 @@ proxmox_lxc = {
       { storage = "/mnt/md0/Library", size = null,  mount = "/mnt/library" }, # null for directory
       { storage = "appdata",          size = "16G", mount = "/mnt/data" },
     ]
-    devices = [
-      { path = "/dev", mode = ""}
-    ]
     network_ipv4 = "192.168.2.150"
   }
   netxdns = {
