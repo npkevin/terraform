@@ -21,6 +21,11 @@ variable memory {
   default = 512
 }
 
+variable bootdisk_size {
+  type    = number
+  default = 8
+}
+
 # network
 variable network_ipv4    { type = string }
 variable network_gateway { type = string }

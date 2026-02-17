@@ -7,7 +7,7 @@ variable proxmox_lvm {
     config = object({
       cpu       = number
       memory    = number
-      bootdisk_size = optional(number)
+      bootdisk_size = optional(number, 16) # null = 8gb
       
       disks = optional(map(object({
         type    = optional(string)  
@@ -30,12 +30,13 @@ variable proxmox_lvm {
 variable proxmox_lxc {
   type = map(object({
     # todo: add domain = "kevnp.lan"
-    description  = optional(string, "Terraform Managed LXC")
-    tags         = optional(list(string), [])
-    unprivileged = optional(bool, true)
+    description   = optional(string, "Terraform Managed LXC")
+    tags          = optional(list(string), [])
+    unprivileged  = optional(bool, true)
 
-    cpu          = optional(number)
-    memory       = optional(number)
+    cpu           = optional(number)
+    memory        = optional(number)
+    bootdisk_size = optional(number, 8) # null is 4gb
 
     network_ipv4    = string
     network_gateway = optional(string, "192.168.2.1")

@@ -64,7 +64,7 @@ resource "proxmox_virtual_environment_container" "lxc" {
   # OS Disk
   disk {
     datastore_id = "local-lvm"
-    size         = 8
+    size         = var.bootdisk_size
   }
   operating_system {
     template_file_id = var.template_id

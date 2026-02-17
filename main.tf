@@ -15,23 +15,23 @@ resource "proxmox_virtual_environment_download_file" "debian_13_lxc_template" {
 }
 
 module "lvm" {
-  source    = "./modules/proxmox-lvm"
-  for_each  = var.proxmox_lvm
+  source   = "./modules/proxmox-lvm"
+  for_each = var.proxmox_lvm
 
-  name        = each.key
-  description = each.value.description
-  tags        = each.value.tags
-  qemu_agent  = each.value.qemu_agent
+  name              = each.key
+  description       = each.value.description
+  tags              = each.value.tags
+  qemu_agent        = each.value.qemu_agent
 
-  cpu_cores   = each.value.config.cpu
-  memory      = each.value.config.memory
-  bootdisk_size = each.value.config.bootdisk_size
-  disks       = each.value.config.disks
+  cpu_cores         = each.value.config.cpu
+  memory            = each.value.config.memory
+  bootdisk_size     = each.value.config.bootdisk_size
+  disks             = each.value.config.disks
 
-  cloudinit   = each.value.config.cloudinit
+  cloudinit         = each.value.config.cloudinit
 
-  root_password   = var.root_password
-  root_public_key  = var.root_public_key
+  root_password     = var.root_password
+  root_public_key   = var.root_public_key
 
   image_id = proxmox_virtual_environment_download_file.debian_13_trixie_qcow2.id
 }
@@ -47,6 +47,7 @@ module "lxc" {
 
   cpu             = each.value.cpu
   memory          = each.value.memory
+  bootdisk_size   = each.value.bootdisk_size
   mountpoints     = each.value.mountpoints
 
   network_ipv4     = each.value.network_ipv4
@@ -57,7 +58,7 @@ module "lxc" {
   features        = try(each.value.features, { nesting = true })
 
   root_password   = var.root_password
-  root_public_key  = var.root_public_key
+  root_public_key = var.root_public_key
 
-  template_id = proxmox_virtual_environment_download_file.debian_13_lxc_template.id
+  template_id     = proxmox_virtual_environment_download_file.debian_13_lxc_template.id
 }

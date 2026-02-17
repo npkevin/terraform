@@ -3,7 +3,7 @@ proxmox_lvm = {
     description = "Administrator 1"
     template    = "debian13-cloudinit"
     tags        = ["lvm-debian"]
-    # qemu_agent  = true
+    qemu_agent  = true
     config = {
       cpu    = 4
       memory = 8192
@@ -19,6 +19,7 @@ proxmox_lvm = {
     config = {
       cpu    = 4
       memory = 8192
+      bootdisk_size = 32
       cloudinit = {
         ip4_address = "192.168.2.202"
       }
