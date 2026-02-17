@@ -43,7 +43,7 @@ variable proxmox_lxc {
 
     mountpoints = optional(list(object({
       storage = optional(string, "local-lvm")
-      size    = optional(string, "8G")
+      size    = string
       mount   = string
     })), [])
 
