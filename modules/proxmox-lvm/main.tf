@@ -54,7 +54,7 @@ resource "proxmox_virtual_environment_vm" "lvm" {
   # OS Disk
   disk {
     datastore_id = "local-lvm"
-    size         = 16
+    size         = var.bootdisk_size
     interface    = "virtio0"
     import_from  = var.image_id
     file_format  = "qcow2"

@@ -23,6 +23,11 @@ variable memory    {
   default = 512
 }
 
+variable bootdisk_size    {
+  type = number
+  default = 16
+}
+
 variable disks {
   type = map(object({
     size     = optional(number, 32)

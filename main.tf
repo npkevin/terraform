@@ -25,6 +25,7 @@ module "lvm" {
 
   cpu_cores   = each.value.config.cpu
   memory      = each.value.config.memory
+  bootdisk_size = each.value.config.bootdisk_size
   disks       = each.value.config.disks
 
   cloudinit   = each.value.config.cloudinit

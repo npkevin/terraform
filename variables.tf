@@ -7,7 +7,8 @@ variable proxmox_lvm {
     config = object({
       cpu       = number
       memory    = number
-
+      bootdisk_size = optional(number)
+      
       disks = optional(map(object({
         type    = optional(string)  
         storage = optional(string)
